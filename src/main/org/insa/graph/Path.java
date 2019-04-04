@@ -38,12 +38,12 @@ public class Path {
         for(int i = 0; i < nodes.size()-1; i++) {
     		List<Arc> arc_successors = nodes.get(i).getSuccessors();
     		int index = -1;
-    		double shortestLength = -1;
-        	for(int j = 0; j < nodes.get(i).getNumberOfSuccessors(); j++) {
+    		double shortestTime = -1;
+        	for(int j = 0; j < arc_successors.size(); j++) {
             	if(arc_successors.get(j).getDestination() == nodes.get(i+1)) {
-            		if(index < 0 || arc_successors.get(j).getMinimumTravelTime() < shortestLength) {
+            		if(index < 0 || arc_successors.get(j).getMinimumTravelTime() < shortestTime) {
             			index = j;
-            			shortestLength = arc_successors.get(j).getMinimumTravelTime();
+            			shortestTime = arc_successors.get(j).getMinimumTravelTime();
             		}
             	}
             }
@@ -77,7 +77,7 @@ public class Path {
     		List<Arc> arc_successors = nodes.get(i).getSuccessors();
     		int index = -1;
     		float shortestLength = -1;
-        	for(int j = 0; j < nodes.get(i).getNumberOfSuccessors(); j++) {
+        	for(int j = 0; j < arc_successors.size(); j++) {
             	if(arc_successors.get(j).getDestination() == nodes.get(i+1)) {
             		if(index < 0 || arc_successors.get(j).getLength() < shortestLength) {
             			index = j;
