@@ -3,23 +3,22 @@ package org.insa.algo.shortestpath;
 import org.insa.graph.Arc;
 import org.insa.graph.Node;
 
-public class Label {
+public class Label implements Comparable<Label>{
 
-	//private Node sommet; //à voir
+	private Node sommet;
 	private boolean marque;
 	private double cout;
 	private Arc predeccesseur;
 	
-	public Label() {
+	public Label(Node sommet) {
 		this.marque = false;
 		this.cout = Double.POSITIVE_INFINITY;
 		this.predeccesseur = null;
+		this.sommet = sommet;
 	}
 	
-	public Label(boolean marque, double cout) {
-		this.marque = marque;
-		this.cout = cout;
-		this.predeccesseur = null;
+	public Node getSommet() {
+		return this.sommet;
 	}
 	
 	public double getCost() {
@@ -45,4 +44,9 @@ public class Label {
 	public void setFather(Arc predeccesseur) {
 		this.predeccesseur = predeccesseur;
 	}
+	
+	@Override
+    public int compareTo(Label other) {
+        return Double.compare(getCost(), other.getCost());
+    }
 }
