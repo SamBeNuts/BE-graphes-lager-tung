@@ -24,6 +24,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		Graph graph = data.getGraph();
 		HashMap<Node, Label> map = new HashMap<Node, Label>();
 		BinaryHeap<Label> heap = new BinaryHeap<Label>();
+		
+		// origin = destination (emptyPath)
+		if(data.getDestination().getId() == data.getOrigin().getId()) {
+			// The destination has been found, notify the observers.
+			notifyDestinationReached(data.getDestination());
+			// Create the final solution.
+			return new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getDestination()));
+		}
 
 		// INITIALISATION
 		for (Node node : graph.getNodes()) {
@@ -68,8 +76,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 		// SOLUTION
 		ShortestPathSolution solution = null;
-		// Destination has no predecessor, the solution is infeasible...
-		if (map.get(data.getDestination()) == null) {
+		// Destination != origine et cout=0, le chemin n'est pas trouvé
+		if (map.get(data.getDestination()).getCost() == Double.POSITIVE_INFINITY) {
 			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
 		} else {
 			// The destination has been found, notify the observers.

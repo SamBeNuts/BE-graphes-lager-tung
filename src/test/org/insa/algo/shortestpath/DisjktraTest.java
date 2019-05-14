@@ -23,8 +23,10 @@ import org.junit.Test;
 public class DisjktraTest {
 	
 	private static ShortestPathSolution validPath, invalidPath;
-	private static ShortestPathSolution emptyPath1_Time, shortPath1_Time, longPath1_Time, emptyPath2_Time, shortPath2_Time, longPath2_Time;	
-	private static ShortestPathSolution emptyPath1_Length, shortPath1_Length, longPath1_Length, emptyPath2_Length, shortPath2_Length, longPath2_Length;	
+	private static ShortestPathSolution emptyPath1_Time_Disjktra, shortPath1_Time_Disjktra, longPath1_Time_Disjktra, emptyPath2_Time_Disjktra, shortPath2_Time_Disjktra, longPath2_Time_Disjktra;	
+	private static ShortestPathSolution emptyPath1_Length_Disjktra, shortPath1_Length_Disjktra, longPath1_Length_Disjktra, emptyPath2_Length_Disjktra, shortPath2_Length_Disjktra, longPath2_Length_Disjktra;
+	private static ShortestPathSolution shortPath1_Time_Bellman, longPath1_Time_Bellman, shortPath2_Time_Bellman, longPath2_Time_Bellman;	
+	private static ShortestPathSolution shortPath1_Length_Bellman, longPath1_Length_Bellman, shortPath2_Length_Bellman, longPath2_Length_Bellman;
     private static Graph map1, map2, map3;
     private static String map1Name, map2Name, map3Name;
     private static Node n1_1, n2_1, n3_1, n1_2, n2_2, n3_2, n1_3, n2_3, n3_3;
@@ -37,7 +39,7 @@ public class DisjktraTest {
 		aiLength = ArcInspectorFactory.getAllFilters().get(3);
 		
         map1Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr";
-        map2Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/haute-garonne.mapgr";
+        map2Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
         map3Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr";
         // Create a graph reader.
         GraphReader reader1 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(map1Name))));
@@ -51,36 +53,56 @@ public class DisjktraTest {
         n1_1 = map1.get(130734);
         n2_1 = map1.get(111950);
         n3_1 = map1.get(143814);        
-        n1_2 = map2.get(38672);
-        n2_2 = map2.get(74382);
-        n3_2 = map2.get(32590);      
+        n1_2 = map2.get(14852);
+        n2_2 = map2.get(14687);
+        n3_2 = map2.get(24060);      
         n1_3 = map3.get(40885);
         n2_3 = map3.get(230387);
         n3_3 = map3.get(307194);
         
         validPath = (new DijkstraAlgorithm(new ShortestPathData(map3, n1_3, n2_3, aiTime))).doRun();
         invalidPath = (new DijkstraAlgorithm(new ShortestPathData(map3, n1_3, n3_3, aiTime))).doRun();
-		/*emptyPath1_Time = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n1_1, aiTime))).doRun();
-		shortPath1_Time = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n2_1, aiTime))).doRun();	
-		longPath1_Time = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();	
-		invalidPath1_Time = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();	
-		emptyPath2_Time = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n1_2, aiTime))).doRun();
-		shortPath2_Time = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n2_2, aiTime))).doRun();	
-		longPath2_Time = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n3_2, aiTime))).doRun();	
-		invalidPath2_Time = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();        
-		emptyPath1_Length = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n1_1, aiTime))).doRun();
-		shortPath1_Length = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n2_1, aiTime))).doRun();	
-		longPath1_Length = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();	
-		invalidPath1_Length = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();
-		emptyPath2_Length = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n1_2, aiTime))).doRun();
-		shortPath2_Length = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n2_2, aiTime))).doRun();	
-		longPath2_Length = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n3_2, aiTime))).doRun();	
-		invalidPath2_Length = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();	*/
+        
+		/*emptyPath1_Time_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n1_1, aiTime))).doRun();
+		shortPath1_Time_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n2_1, aiTime))).doRun();	
+		longPath1_Time_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();*/	
+		emptyPath2_Time_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n1_2, aiTime))).doRun();
+		shortPath2_Time_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n2_2, aiTime))).doRun();	
+		longPath2_Time_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n3_2, aiTime))).doRun();	     
+		/*emptyPath1_Length_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n1_1, aiTime))).doRun();
+		shortPath1_Length_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n2_1, aiTime))).doRun();	
+		longPath1_Length_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();*/	
+		emptyPath2_Length_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n1_2, aiTime))).doRun();
+		shortPath2_Length_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n2_2, aiTime))).doRun();	
+		longPath2_Length_Disjktra = (new DijkstraAlgorithm(new ShortestPathData(map2, n1_2, n3_2, aiTime))).doRun();	
+		
+		/*shortPath1_Time_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map1, n1_1, n2_1, aiTime))).doRun();	
+		longPath1_Time_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();*/	
+		shortPath2_Time_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map2, n1_2, n2_2, aiTime))).doRun();	
+		longPath2_Time_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map2, n1_2, n3_2, aiTime))).doRun();	     
+		/*shortPath1_Length_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map1, n1_1, n2_1, aiTime))).doRun();	
+		longPath1_Length_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map1, n1_1, n3_1, aiTime))).doRun();*/
+		shortPath2_Length_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map2, n1_2, n2_2, aiTime))).doRun();	
+		longPath2_Length_Bellman = (new BellmanFordAlgorithm(new ShortestPathData(map2, n1_2, n3_2, aiTime))).doRun();
 	}
 
     @Test
     public void testValid() {
         assertTrue(validPath.getPath().isValid());
-        assertFalse(invalidPath.getPath().isValid());
+        assertEquals(invalidPath.getStatus(), Status.INFEASIBLE);
+    }
+
+	@Test
+    public void testOptimaliteOracle() {
+        assertEquals(shortPath2_Time_Disjktra.getPath().getMinimumTravelTime(), shortPath2_Time_Bellman.getPath().getMinimumTravelTime(), 0.001);
+        assertEquals(longPath2_Time_Disjktra.getPath().getMinimumTravelTime(), longPath2_Time_Bellman.getPath().getMinimumTravelTime(), 0.001);
+        assertEquals(shortPath2_Length_Disjktra.getPath().getLength(), shortPath2_Length_Bellman.getPath().getLength(), 0.001);
+        assertEquals(longPath2_Length_Disjktra.getPath().getLength(), longPath2_Length_Bellman.getPath().getLength(), 0.001);
+    }
+
+	@Test
+    public void testOptimalite() {
+		assertEquals(emptyPath2_Time_Disjktra.getPath().getMinimumTravelTime(), 0, 0.001);
+		assertEquals(emptyPath2_Length_Disjktra.getPath().getLength(), 0, 0.001);
     }
 }
