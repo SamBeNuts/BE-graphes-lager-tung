@@ -33,20 +33,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			return new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getDestination()));
 		}
 
-		// INITIALISATION
-		for (Node node : graph.getNodes()) {
-			Label l = new Label(node);
-			map.put(node, l);
-		}
+		init(graph, map, data);
 		Node s = data.getOrigin();
 		map.get(s).setCost(0);
 		heap.insert(map.get(s));
 		notifyOriginProcessed(data.getOrigin());
 		int cmp = 0;
+		boolean stop = false;
 		// ITERATION
 		// Affichage performance
 		System.out.println("taille tas : " + heap.size());
-		while (!heap.isEmpty()) {
+		while (!heap.isEmpty() && !stop) { //tant que tous les sommets sont non marqués ou si un chemin est trouvé entre origin et dest (stop)
 			Label l_s = heap.deleteMin();
 			l_s.setMark(true);
 			for (Arc arc : l_s.getSommet().getSuccessors()) {
@@ -68,6 +65,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					}
 				}
 			}
+			if(l_s.getSommet().getId() == data.getDestination().getId()) stop = true;
 			cmp++;
 			// Affichage performance
 			System.out.println("coût label marqué : " + l_s.getCost());
@@ -99,5 +97,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 		return solution;
 	}
-
+	
+	public void init(Graph graph, HashMap<Node, Label> map, ShortestPathData data) {
+		// INITIALISATION
+		for (Node node : graph.getNodes()) {
+			Label l = new Label(node);
+			map.put(node, l);
+		}
+	}
 }
