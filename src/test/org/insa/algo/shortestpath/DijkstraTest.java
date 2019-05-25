@@ -133,16 +133,24 @@ public class DijkstraTest {
 				int d = rand.nextInt(maps[j].getNodes().size());
 				ShortestPathSolution path_Length_Dijkstra = (new DijkstraAlgorithm(new ShortestPathData(maps[j], maps[j].get(o), maps[j].get(d), aiLength))).run();
 				ShortestPathSolution path_Time_Dijkstra = (new DijkstraAlgorithm(new ShortestPathData(maps[j], maps[j].get(o), maps[j].get(d), aiTime))).run();
-			    bw[j*2].write(path_Length_Dijkstra.getInputData().getOrigin().toString() + "\t" + path_Length_Dijkstra.getInputData().getDestination().toString() 
-			    		+ "\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
-			    		"\t" + path_Length_Dijkstra.getSolvingTime().toString() + "\t" + path_Length_Dijkstra.getNbArcs() + "\t" + 
-			    		path_Length_Dijkstra.getNbExplores() + "\t" + path_Length_Dijkstra.getNbMarques() +
+			    bw[j*2].write(path_Length_Dijkstra.getInputData().getOrigin().toString() + 
+			    		"\t" + path_Length_Dijkstra.getInputData().getDestination().toString() + 
+			    		"\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
+			    		"\t" + path_Length_Dijkstra.getSolvingTime().getSeconds() +
+			    		"." + path_Length_Dijkstra.getSolvingTime().getNano() + 
+			    		"\t" + path_Length_Dijkstra.getNbArcs() + 
+			    		"\t" + path_Length_Dijkstra.getNbExplores() +
+			    		"\t" + path_Length_Dijkstra.getNbMarques() +
 			    		"\t" + path_Length_Dijkstra.getMaxTas() + "\n");
 			    
-			    bw[j*2+1].write(path_Time_Dijkstra.getInputData().getOrigin().toString() + "\t" + path_Time_Dijkstra.getInputData().getDestination().toString() 
-			    		+ "\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
-			    		"\t" + path_Time_Dijkstra.getSolvingTime().toString() + "\t" + path_Time_Dijkstra.getNbArcs() + "\t" + 
-			    		path_Time_Dijkstra.getNbExplores() + "\t" + path_Time_Dijkstra.getNbMarques() +
+			    bw[j*2+1].write(path_Time_Dijkstra.getInputData().getOrigin().toString() + 
+			    		"\t" + path_Time_Dijkstra.getInputData().getDestination().toString() + 
+			    		"\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
+			    		"\t" + path_Time_Dijkstra.getSolvingTime().getSeconds() +
+			    		"." + path_Time_Dijkstra.getSolvingTime().getNano() + 
+			    		"\t" + path_Time_Dijkstra.getNbArcs() + 
+			    		"\t" + path_Time_Dijkstra.getNbExplores() + 
+			    		"\t" + path_Time_Dijkstra.getNbMarques() +
 			    		"\t" + path_Time_Dijkstra.getMaxTas() + "\n");
 			}
 		}

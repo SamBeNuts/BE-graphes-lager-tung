@@ -19,11 +19,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         super(data);
     }
 	
-	public void init(Graph graph, HashMap<Node, Label> map, ShortestPathData data) {
-		// INITIALISATION
-		for (Node node : graph.getNodes()) {
-			Label l = new LabelStar(node, Point.distance(node.getPoint(), data.getDestination().getPoint()));
-			map.put(node, l);
-		}
+	public void addLabel(Node node, HashMap<Node, Label> map, ShortestPathData data) {
+		if(!map.containsKey(node)) map.put(node, new LabelStar(node, data));
 	}
 }

@@ -1,13 +1,20 @@
 package org.insa.algo.shortestpath;
 
+import org.insa.algo.AbstractInputData;
 import org.insa.graph.Node;
+import org.insa.graph.Point;
 
 public class LabelStar extends Label {
 	private double cout_estime; 
 	
-	public LabelStar(Node sommet, double cout_estime) {
+	public LabelStar(Node sommet, ShortestPathData data) {
 		super(sommet);
-		this.cout_estime = cout_estime;
+		if(data.getMode() == AbstractInputData.Mode.LENGTH) {
+			this.cout_estime = Point.distance(sommet.getPoint(), data.getDestination().getPoint());
+		} else {
+			int vitesse = Math.max(data.getMaximumSpeed(), data.getGraph().getGraphInformation().getMaximumSpeed());
+			this.cout_estime = Point.distance(sommet.getPoint(), data.getDestination().getPoint())/vitesse*3.6;
+		}
 	}
 	
 	public double getCostEstime() {

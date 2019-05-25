@@ -37,8 +37,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			return new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getDestination()));
 		}
 
-		init(graph, map, data);
 		Node s = data.getOrigin();
+		addLabel(s, map, data);
 		map.get(s).setCost(0);
 		heap.insert(map.get(s));
 		notifyOriginProcessed(data.getOrigin());
@@ -51,6 +51,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			for (Arc arc : l_s.getSommet().getSuccessors()) {
 				if (data.isAllowed(arc)) {
 					Node destination = arc.getDestination();
+					addLabel(destination, map, data);
 					Label l_destination = map.get(destination);
 					if (!l_destination.getMark()) {
 						if (l_destination.getCost() > l_s.getCost() + data.getCost(arc)) {
@@ -77,8 +78,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		}
 		// SOLUTION
 		ShortestPathSolution solution = null;
-		// Destination != origine et cout=0, le chemin n'est pas trouvÃ©
-		if (map.get(data.getDestination()).getCost() == Double.POSITIVE_INFINITY) {
+		// Destination jamais explorée, ou destination != origine et cout=+inf destination jamais explorée, le chemin n'est pas trouvÃ©
+		if (!map.containsKey(data.getDestination()) || map.get(data.getDestination()).getCost() == Double.POSITIVE_INFINITY) {
 			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
 		} else {
 			// The destination has been found, notify the observers.
@@ -98,11 +99,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return solution;
 	}
 	
-	public void init(Graph graph, HashMap<Node, Label> map, ShortestPathData data) {
-		// INITIALISATION
-		for (Node node : graph.getNodes()) {
-			Label l = new Label(node);
-			map.put(node, l);
-		}
+	public void addLabel(Node node, HashMap<Node, Label> map, ShortestPathData data) {
+		if(!map.containsKey(node)) map.put(node, new Label(node));
 	}
 }

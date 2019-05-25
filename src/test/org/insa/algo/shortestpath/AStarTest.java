@@ -133,16 +133,24 @@ public class AStarTest {
 				int d = rand.nextInt(maps[j].getNodes().size());
 				ShortestPathSolution path_Length_AStar = (new AStarAlgorithm(new ShortestPathData(maps[j], maps[j].get(o), maps[j].get(d), aiLength))).run();
 				ShortestPathSolution path_Time_AStar = (new AStarAlgorithm(new ShortestPathData(maps[j], maps[j].get(o), maps[j].get(d), aiTime))).run();
-			    bw[j*2].write(path_Length_AStar.getInputData().getOrigin().toString() + "\t" + path_Length_AStar.getInputData().getDestination().toString() 
-			    		+ "\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
-			    		"\t" + path_Length_AStar.getSolvingTime().toString() + "\t" + path_Length_AStar.getNbArcs() + "\t" + 
-			    		path_Length_AStar.getNbExplores() + "\t" + path_Length_AStar.getNbMarques() +
+			    bw[j*2].write(path_Length_AStar.getInputData().getOrigin().toString() + 
+			    		"\t" + path_Length_AStar.getInputData().getDestination().toString() +
+			    		"\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
+			    		"\t" + path_Length_AStar.getSolvingTime().getSeconds() +
+			    		"." + path_Length_AStar.getSolvingTime().getNano() + 
+			    		"\t" + path_Length_AStar.getNbArcs() + 
+			    		"\t" + path_Length_AStar.getNbExplores() + 
+			    		"\t" + path_Length_AStar.getNbMarques() +
 			    		"\t" + path_Length_AStar.getMaxTas() + "\n");
 			    
-			    bw[j*2+1].write(path_Time_AStar.getInputData().getOrigin().toString() + "\t" + path_Time_AStar.getInputData().getDestination().toString() 
-			    		+ "\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
-			    		"\t" + path_Time_AStar.getSolvingTime().toString() + "\t" + path_Time_AStar.getNbArcs() + "\t" + 
-			    		path_Time_AStar.getNbExplores() + "\t" + path_Time_AStar.getNbMarques() +
+			    bw[j*2+1].write(path_Time_AStar.getInputData().getOrigin().toString() + 
+			    		"\t" + path_Time_AStar.getInputData().getDestination().toString() + 
+			    		"\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
+			    		"\t" + path_Time_AStar.getSolvingTime().getSeconds() +
+			    		"." + path_Time_AStar.getSolvingTime().getNano() + 
+			    		"\t" + path_Time_AStar.getNbArcs() + 
+			    		"\t" + path_Time_AStar.getNbExplores() + 
+			    		"\t" + path_Time_AStar.getNbMarques() +
 			    		"\t" + path_Time_AStar.getMaxTas() + "\n");
 			}
 		}
