@@ -9,6 +9,12 @@ public class ShortestPathSolution extends AbstractSolution {
 
     // Optimal solution.
     private Path path;
+    
+    // Data from the solution
+    private int nb_arcs;
+    private int nb_explores;
+    private int nb_marques;
+    private int max_tas;
 
     /**
      * {@inheritDoc}
@@ -40,6 +46,22 @@ public class ShortestPathSolution extends AbstractSolution {
         this.path = path;
     }
 
+    /**
+     * Create a new shortest-path solution.
+     * 
+     * @param data Original input data for this solution.
+     * @param status Status of the solution (FEASIBLE / OPTIMAL).
+     * @param path Path corresponding to the solution.
+     */
+    public ShortestPathSolution(ShortestPathData data, Status status, Path path, int nb_arcs, int nb_explores, int nb_marques, int max_tas) {
+        super(data, status);
+        this.path = path;
+        this.nb_arcs = nb_arcs;
+        this.nb_explores = nb_explores;
+        this.nb_marques = nb_marques;
+        this.max_tas = max_tas;
+    }
+
     @Override
     public ShortestPathData getInputData() {
         return (ShortestPathData) super.getInputData();
@@ -50,6 +72,22 @@ public class ShortestPathSolution extends AbstractSolution {
      */
     public Path getPath() {
         return path;
+    }
+    
+    public int getNbArcs() {
+    	return nb_arcs;
+    }
+    
+    public int getNbExplores() {
+    	return nb_explores;
+    }
+    
+    public int getNbMarques() {
+    	return nb_marques;
+    }
+    
+    public int getMaxTas() {
+    	return max_tas;
     }
 
     @Override

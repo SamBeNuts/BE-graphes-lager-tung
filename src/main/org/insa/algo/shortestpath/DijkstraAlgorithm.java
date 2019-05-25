@@ -24,6 +24,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		Graph graph = data.getGraph();
 		HashMap<Node, Label> map = new HashMap<Node, Label>();
 		BinaryHeap<Label> heap = new BinaryHeap<Label>();
+	    // Data for the solution
+	    int nb_explores = 1;
+	    int nb_marques = 0;
+	    int max_tas = 1;
 		
 		// origin = destination (emptyPath)
 		if(data.getDestination().getId() == data.getOrigin().getId()) {
@@ -38,14 +42,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		map.get(s).setCost(0);
 		heap.insert(map.get(s));
 		notifyOriginProcessed(data.getOrigin());
-		int cmp = 0;
 		boolean stop = false;
 		// ITERATION
-		// Affichage performance
-		System.out.println("taille tas : " + heap.size());
 		while (!heap.isEmpty() && !stop) { //tant que tous les sommets sont non marqués ou si un chemin est trouvé entre origin et dest (stop)
 			Label l_s = heap.deleteMin();
 			l_s.setMark(true);
+			nb_marques++;
 			for (Arc arc : l_s.getSommet().getSuccessors()) {
 				if (data.isAllowed(arc)) {
 					Node destination = arc.getDestination();
@@ -60,17 +62,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 								heap.update(index_destination);
 							} catch (ElementNotFoundException e) {
 								heap.insert(l_destination);
+								nb_explores++;
+								if(heap.size() > max_tas) max_tas = heap.size();
 							}
 						}
 					}
 				}
 			}
 			if(l_s.getSommet().getId() == data.getDestination().getId()) stop = true;
-			cmp++;
 			// Affichage performance
-			System.out.println("coût label marqué : " + l_s.getCost());
-			System.out.println("nb successeurs testés : " + l_s.getSommet().getSuccessors().size());
-			System.out.println("taille tas : " + heap.size());
+			//System.out.println("coût label marqué : " + l_s.getCost());
+			//System.out.println("nb successeurs testés : " + l_s.getSommet().getSuccessors().size());
+			//System.out.println("taille tas : " + heap.size());
 		}
 		// SOLUTION
 		ShortestPathSolution solution = null;
@@ -89,11 +92,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			}
 			// Reverse the path...
 			Collections.reverse(arcs);
-			// Affichage performance
-			System.out.println("nb arcs plus courts chemins : " + arcs.size());
-			System.out.println("nb iteration : " + cmp);
 			// Create the final solution.
-			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs), arcs.size(), nb_explores, nb_marques, max_tas);
 		}
 		return solution;
 	}
