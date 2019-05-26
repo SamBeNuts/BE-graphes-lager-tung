@@ -29,31 +29,35 @@ public class DijkstraTest {
 	private static ShortestPathSolution  emptyPath2_Length_Dijkstra, shortPath2_Length_Dijkstra, longPath2_Length_Dijkstra;
 	private static ShortestPathSolution  shortPath2_Time_Bellman, longPath2_Time_Bellman;	
 	private static ShortestPathSolution  shortPath2_Length_Bellman, longPath2_Length_Bellman;
-    private static Graph map1, map2, map3,map4;
+    private static Graph map1, map2, map3, map4, map5;
     private static Node n1_2, n2_2, n3_2, n1_3, n2_3, n3_3;
     private static ArcInspector aiTime, aiLength;
     
 	
 	@BeforeClass
     public static void initAll() throws IOException{
-		aiTime = ArcInspectorFactory.getAllFilters().get(1);
-		aiLength = ArcInspectorFactory.getAllFilters().get(3);
+		aiTime = ArcInspectorFactory.getAllFilters().get(0);
+		aiLength = ArcInspectorFactory.getAllFilters().get(2);
 		
         String map1Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre.mapgr";
         String map2Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/toulouse.mapgr";
         String map3Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/new-zealand.mapgr";
         String map4Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/carre-dense.mapgr";
+        String map5Name = "/home/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/rhone-alpes.mapgr";
         
         // Create a graph reader.
         GraphReader reader1 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(map1Name))));
         GraphReader reader2 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(map2Name))));
         GraphReader reader3 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(map3Name))));
         GraphReader reader4 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(map4Name))));
+        GraphReader reader5 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(map5Name))));
+        
         // Read the graph.
         map1 = reader1.read();
         map2 = reader2.read();
         map3 = reader3.read();
         map4 = reader4.read();
+        map5 = reader5.read();
                 
         n1_2 = map2.get(14852);
         n2_2 = map2.get(14687);
@@ -115,29 +119,31 @@ public class DijkstraTest {
 	
 	@Test
 	public void testPerformance() throws IOException{
-		Graph[] maps = {map2, map4};
+		int nb_exec = 200;
+		Graph[] maps = {map2, map5};
 		BufferedWriter[] bw = {
-				new BufferedWriter(new FileWriter("toulouse_distance_100_Dijkstra_data.txt")), 
-				new BufferedWriter(new FileWriter("toulouse_temps_100_Dijkstra_data.txt")),
-				new BufferedWriter(new FileWriter("carre-dense_distance_100_Dijkstra_data.txt")),
-				new BufferedWriter(new FileWriter("carre-dense_temps_100_Dijkstra_data.txt"))};
-		bw[0].write("toulouse"  + "\n" + 0 + "\n" + 100 + "\n");
-		bw[1].write("toulouse"  + "\n" + 1 + "\n" + 100 + "\n");
-		bw[2].write("carre-dense"  + "\n" + 0 + "\n" + 100 + "\n");
-		bw[3].write("carre-dense"  + "\n" + 1 + "\n" + 100 + "\n");
+				new BufferedWriter(new FileWriter("rhone-alpes_distance_" + nb_exec + "_Dijkstra_data.txt")), 
+				new BufferedWriter(new FileWriter("rhone-alpes_temps_" + nb_exec + "_Dijkstra_data.txt")),
+				new BufferedWriter(new FileWriter("carre-dense_distance_" + nb_exec + "_Dijkstra_data.txt")),
+				new BufferedWriter(new FileWriter("carre-dense_temps_" + nb_exec + "_Dijkstra_data.txt"))};
+		bw[0].write("rhone-alpes"  + "\n" + 0 + "\n" + nb_exec + "\n");
+		bw[1].write("rhone-alpes"  + "\n" + 1 + "\n" + nb_exec + "\n");
+		bw[2].write("carre-dense"  + "\n" + 0 + "\n" + nb_exec + "\n");
+		bw[3].write("carre-dense"  + "\n" + 1 + "\n" + nb_exec + "\n");
 		Random rand = new Random();
 		for(int j = 0; j < maps.length; j++) {
-			for(int i = 0;i < 100; i++) {
-				System.out.println(i+1 + "/100");
-				int o = rand.nextInt(maps[j].getNodes().size());
-				int d = rand.nextInt(maps[j].getNodes().size());
-				ShortestPathSolution path_Length_Dijkstra = (new DijkstraAlgorithm(new ShortestPathData(maps[j], maps[j].get(o), maps[j].get(d), aiLength))).run();
-				ShortestPathSolution path_Time_Dijkstra = (new DijkstraAlgorithm(new ShortestPathData(maps[j], maps[j].get(o), maps[j].get(d), aiTime))).run();
+			for(int i = 0;i < nb_exec; i++) {
+				System.out.println(i+1 + "/" + nb_exec);
+				int o_l = rand.nextInt(maps[j].getNodes().size());
+				int d_l = rand.nextInt(maps[j].getNodes().size());
+				int o_t = rand.nextInt(maps[j].getNodes().size());
+				int d_t = rand.nextInt(maps[j].getNodes().size());
+				ShortestPathSolution path_Length_Dijkstra = (new DijkstraAlgorithm(new ShortestPathData(maps[j], maps[j].get(o_l), maps[j].get(d_l), aiLength))).run();
+				ShortestPathSolution path_Time_Dijkstra = (new DijkstraAlgorithm(new ShortestPathData(maps[j], maps[j].get(o_t), maps[j].get(d_t), aiTime))).run();
 			    bw[j*2].write(path_Length_Dijkstra.getInputData().getOrigin().toString() + 
 			    		"\t" + path_Length_Dijkstra.getInputData().getDestination().toString() + 
-			    		"\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
-			    		"\t" + path_Length_Dijkstra.getSolvingTime().getSeconds() +
-			    		"." + path_Length_Dijkstra.getSolvingTime().getNano() + 
+			    		"\t" + Point.distance(maps[j].get(o_l).getPoint(), maps[j].get(d_l).getPoint()) +
+			    		"\t" + path_Length_Dijkstra.getSolvingTime().toNanos() +
 			    		"\t" + path_Length_Dijkstra.getNbArcs() + 
 			    		"\t" + path_Length_Dijkstra.getNbExplores() +
 			    		"\t" + path_Length_Dijkstra.getNbMarques() +
@@ -145,9 +151,8 @@ public class DijkstraTest {
 			    
 			    bw[j*2+1].write(path_Time_Dijkstra.getInputData().getOrigin().toString() + 
 			    		"\t" + path_Time_Dijkstra.getInputData().getDestination().toString() + 
-			    		"\t" + Point.distance(maps[j].get(o).getPoint(), maps[j].get(d).getPoint()) +
-			    		"\t" + path_Time_Dijkstra.getSolvingTime().getSeconds() +
-			    		"." + path_Time_Dijkstra.getSolvingTime().getNano() + 
+			    		"\t" + Point.distance(maps[j].get(o_t).getPoint(), maps[j].get(d_t).getPoint()) +
+			    		"\t" + path_Time_Dijkstra.getSolvingTime().toNanos() +
 			    		"\t" + path_Time_Dijkstra.getNbArcs() + 
 			    		"\t" + path_Time_Dijkstra.getNbExplores() + 
 			    		"\t" + path_Time_Dijkstra.getNbMarques() +

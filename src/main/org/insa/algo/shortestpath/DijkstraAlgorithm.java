@@ -37,10 +37,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			return new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getDestination()));
 		}
 
-		Node s = data.getOrigin();
-		addLabel(s, map, data);
-		map.get(s).setCost(0);
-		heap.insert(map.get(s));
+		Label s = addLabel(data.getOrigin(), map, data);
+		s.setCost(0);
+		heap.insert(s);
 		notifyOriginProcessed(data.getOrigin());
 		boolean stop = false;
 		// ITERATION
@@ -50,9 +49,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			nb_marques++;
 			for (Arc arc : l_s.getSommet().getSuccessors()) {
 				if (data.isAllowed(arc)) {
-					Node destination = arc.getDestination();
-					addLabel(destination, map, data);
-					Label l_destination = map.get(destination);
+					Label l_destination = addLabel(arc.getDestination(), map, data);
 					if (!l_destination.getMark()) {
 						if (l_destination.getCost() > l_s.getCost() + data.getCost(arc)) {
 							notifyNodeReached(arc.getDestination());
@@ -99,7 +96,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		return solution;
 	}
 	
-	public void addLabel(Node node, HashMap<Node, Label> map, ShortestPathData data) {
-		if(!map.containsKey(node)) map.put(node, new Label(node));
+	public Label addLabel(Node node, HashMap<Node, Label> map, ShortestPathData data) {
+		if(!map.containsKey(node)) {
+			Label l = new Label(node);
+			map.put(node, l);
+			return l;
+		} else return map.get(node);
 	}
 }
