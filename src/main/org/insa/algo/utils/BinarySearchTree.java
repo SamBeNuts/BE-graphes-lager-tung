@@ -3,6 +3,8 @@ package org.insa.algo.utils;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.insa.algo.shortestpath.Label;
+
 public class BinarySearchTree<E extends Comparable<E>> implements PriorityQueue<E> {
 
     // Underlying implementation
@@ -41,9 +43,13 @@ public class BinarySearchTree<E extends Comparable<E>> implements PriorityQueue<
 
     @Override
     public void remove(E x) throws ElementNotFoundException {
+        print();
         if (!sortedSet.remove(x)) {
-            throw new ElementNotFoundException(x);
+            print();
+            System.out.println();
+        	throw new ElementNotFoundException(x);
         }
+        print();
     }
 
     @Override
@@ -54,11 +60,19 @@ public class BinarySearchTree<E extends Comparable<E>> implements PriorityQueue<
         return sortedSet.first();
     }
 
+    public boolean contains(E x) {
+    	System.out.println("BST : " + x + " - " + sortedSet.contains(x));
+        return sortedSet.contains(x);
+    }
+
     @Override
     public E deleteMin() throws EmptyPriorityQueueException {
         E min = findMin();
         remove(min);
         return min;
     }
-
+    
+    public void print() {
+        System.out.println(sortedSet.toString());
+    }
 }

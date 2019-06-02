@@ -157,12 +157,14 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     		int left=index_left(i);
     		int right= left+1;
     		try {
-        		indexOf(x,left);
-    		}catch(ElementNotFoundException e) {}
-    		try {
-        		indexOf(x,right);
-    		}catch(ElementNotFoundException e) {}
-    		return i; //a enlever
+        		return indexOf(x,left);
+    		}catch(ElementNotFoundException e1) {
+        		try {
+            		return indexOf(x,right);
+        		}catch(ElementNotFoundException e2) {
+        			throw new ElementNotFoundException(x);
+        		}
+    		}
     	}
     }
     

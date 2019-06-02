@@ -47,6 +47,15 @@ public class Label implements Comparable<Label>{
 	
 	@Override
     public int compareTo(Label other) {
-        return Double.compare(getCost(), other.getCost());
+		return Double.compare(getCost(), other.getCost());
     }
+
+    public boolean equals(Label other) {
+		return (this.getSommet().getId() == other.getSommet().getId());
+    }
+
+	@Override
+	public String toString() {
+		return sommet + " - " + cout;
+	}
 }

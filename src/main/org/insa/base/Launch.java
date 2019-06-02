@@ -19,7 +19,6 @@ import org.insa.graphics.drawing.Drawing;
 import org.insa.graphics.drawing.components.BasicDrawing;
 
 public class Launch {
-
     /**
      * Create a new Drawing inside a JFrame an return it.
      * 
@@ -72,7 +71,6 @@ public class Launch {
 
         // Draw the path.
         drawing.drawPath(path);
-
     }
 
 }

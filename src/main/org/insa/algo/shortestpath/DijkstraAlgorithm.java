@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.insa.algo.AbstractSolution.Status;
+import org.insa.algo.utils.BSTDuplicateBalance;
 import org.insa.algo.utils.BinaryHeap;
+import org.insa.algo.utils.BinarySearchTreeDuplicate;
 import org.insa.algo.utils.ElementNotFoundException;
 import org.insa.graph.Arc;
 import org.insa.graph.Graph;
@@ -22,8 +24,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	protected ShortestPathSolution doRun() throws ElementNotFoundException {
 		ShortestPathData data = getInputData();
 		Graph graph = data.getGraph();
-		HashMap<Node, Label> map = new HashMap<Node, Label>();
-		BinaryHeap<Label> heap = new BinaryHeap<Label>();
+		HashMap<Node, Label> map = new HashMap<>();
+		//BinaryHeap<Label> heap = new BinaryHeap<>();
+		BinarySearchTreeDuplicate<Label> heap = new BinarySearchTreeDuplicate<>();
+		//BSTDuplicateBalance<Label> heap = new BSTDuplicateBalance<>(); //Ne fonctionne pas, erreur sur l'auto-balancement
 	    // Data for the solution
 	    int nb_explores = 1;
 	    int nb_marques = 0;
@@ -53,16 +57,24 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					if (!l_destination.getMark()) {
 						if (l_destination.getCost() > l_s.getCost() + data.getCost(arc)) {
 							notifyNodeReached(arc.getDestination());
+							if(heap.contains(l_destination)) {
+								heap.remove(l_destination);
+							}else {
+								nb_explores++;
+								if(heap.size() > max_tas) max_tas = heap.size();
+							}
 							l_destination.setCost(l_s.getCost() + data.getCost(arc));
 							l_destination.setFather(arc);
-							try {
+							heap.insert(l_destination);
+							//Ancienne solution avec la BinaryHeap
+							/*try {
 								int index_destination = heap.indexOf(l_destination);
 								heap.update(index_destination);
 							} catch (ElementNotFoundException e) {
 								heap.insert(l_destination);
 								nb_explores++;
 								if(heap.size() > max_tas) max_tas = heap.size();
-							}
+							}*/
 						}
 					}
 				}
